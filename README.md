@@ -20,4 +20,12 @@ Setiap kelompok beranggotakan **3 orang**. Mulai dari NIM terkecil
 
  * Untuk backend, wajib menggunakan **Java Web Technology** dengan menggunakan JAX-WS
  * Gunakan **MySQL** untuk menyimpan data.
- * Untuk melakukan testing menggunakan SOAP-UI, dan semua kasus uji (SOAP-UI Project) di letakkan di ```test\soap-ui```
+ * Struktur Folder
+   * `docs` meletakkan semua dokumentasi Business & Logical Design dalam bentuk Wiki
+   * `src` soruce code java
+   * `lib` Java Library yang dibutuhkan oleh Java Project
+   * `build` build terhadap source code
+   * `wsdl` letak dari WSDL
+   * `test` test cases/codes
+   * Untuk melakukan testing menggunakan SOAP-UI, dan semua kasus uji (SOAP-UI Project) di letakkan di `test\soap-ui`
+ 
