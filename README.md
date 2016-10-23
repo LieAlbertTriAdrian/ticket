@@ -21,6 +21,8 @@ Setiap kelompok beranggotakan **3 orang**. Mulai dari NIM terkecil
    * terdapat deskripsi singkat dari aplikasi
    * penjelasan mengenai pembagian tugas masing-masing anggota (lihat formatnya pada bagian pembagian tugas)
    * prosedur instalasi
+ * Merge request dari repository anda ke repository ini dengan format Nama kelompok - NIM terkecil - Nama Lengkap dengan NIM terkecil sebelum Jumat, 28 Oktober 2016 17.00.
+
 
 ## Tools
 
