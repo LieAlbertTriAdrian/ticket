@@ -10,11 +10,17 @@ Setiap kelompok beranggotakan **3 orang**. Mulai dari NIM terkecil
 
 ## Petunjuk Pengerjaan
 
- * Fork pada repository ini dan berinama sesuai dengan nama Project di Google Drive
+ * Buatlah Group pada gitlab.
+ * Tambahkan anggota tim pada Group tsb dan akun @yudis
+ * Fork repository ini dengan kelompok yang telah dibuat.
+ * Ubah hak akses repository hasil Fork anda menjadi private.
  * Silakan commit pada repository anda (hasil fork).
  * Lakukan berberapa commit dengan pesan yang bermakna, contoh: `fix css`, `create post done`, jangan seperti `final`, `benerin dikit`. Disarankan untuk tidak melakukan commit dengan perubahan yang besar karena akan mempengaruhi penilaian (contoh: hanya melakukan satu commit kemudian dikumpulkan). Sebaiknya commit dilakukan setiap ada penambahan fitur. **Commit dari setiap anggota tim akan mempengaruhi penilaian.** Jadi, setiap anggota tim harus melakukan commit yang berpengaruh terhadap proses pembuatan aplikasi.
  * Edit file readme ini semenarik mungkin (gunakan panduan Markdown language), diperbolehkan untuk merubah struktur dari readme ini.
- * Pada Readme terdapat tampilan aplikasi dan penjelasan mengenai pembagian tugas masing-masing anggota (lihat formatnya pada bagian **pembagian tugas**).
+ * Pada Readme
+   * terdapat deskripsi singkat dari aplikasi
+   * penjelasan mengenai pembagian tugas masing-masing anggota (lihat formatnya pada bagian pembagian tugas)
+   * prosedur instalasi
 
 ## Tools
 
