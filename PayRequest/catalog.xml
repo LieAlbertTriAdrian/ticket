@@ -2,4 +2,6 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="file:/C:/Users/zainelwati/Downloads/TransactionService.wsdl" uri="src/conf/xml-resources/web-services/NewWebServiceFromWSDL/wsdl/TransactionService.wsdl"/>
     <system systemId="file:/C:/Users/zainelwati/Downloads/TransactionService_schema1.xsd" uri="src/conf/xml-resources/web-services/NewWebServiceFromWSDL/wsdl/TransactionService_schema1.xsd"/>
+    <system systemId="file:/home/alberttriadrian/Downloads/TicketService.wsdl" uri="src/conf/xml-resources/web-services/TicketService/wsdl/TicketService.wsdl"/>
+    <system systemId="file:/home/alberttriadrian/Downloads/TicketServiceSchema.xsd" uri="src/conf/xml-resources/web-services/TicketService/wsdl/TicketServiceSchema.xsd"/>
 </catalog>

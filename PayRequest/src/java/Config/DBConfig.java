@@ -10,7 +10,7 @@ package Config;
  * @author alberttriadrian
  */
 public class DBConfig {
-    public static String dbName;
-    public static String dbUsername;
-    public static String dbPassword;
+    public static String dbName = "ticket_for_events";
+    public static String dbUsername = "root";
+    public static String dbPassword = "alberttriadrian";
 }
