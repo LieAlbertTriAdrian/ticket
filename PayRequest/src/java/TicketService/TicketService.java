@@ -42,13 +42,13 @@ public class TicketService {
      */
     @WebMethod(operationName = "createTicket")
     @WebResult(name = "Ticket")
-    public Ticket createTicket(@WebParam(name = "eventID") int eventID, @WebParam(name = "userID") int userID, @WebParam(name = "transactionID") int transactionID, @WebParam(name = "type") String type, @WebParam(name = "price") double price, @WebParam(name = "firstName") String firstName, @WebParam(name = "lastName") String lastName, @WebParam(name = "email") String email, @WebParam(name = "status") String status) {
+    public Ticket createTicket(@WebParam(name = "eventID") int eventID, @WebParam(name = "userID") int userID, @WebParam(name = "transactionID") int transactionID, @WebParam(name = "type") String type, @WebParam(name = "price") double price, @WebParam(name = "firstName") String firstName, @WebParam(name = "lastName") String lastName, @WebParam(name = "email") String email) {
         try {
             new Driver();
             Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
             Statement statement = connection.createStatement();
 
-            String createTicketQuery = "INSERT INTO tickets (event_id, user_id, transaction_id, type, price, first_name, last_name, email, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String createTicketQuery = "INSERT INTO tickets (event_id, user_id, transaction_id, type, price, first_name, last_name, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement createTicketStatement = connection.prepareStatement(createTicketQuery);
             createTicketStatement.setInt(1, eventID);
             createTicketStatement.setInt(2, userID);
@@ -58,11 +58,37 @@ public class TicketService {
             createTicketStatement.setString(6, firstName);
             createTicketStatement.setString(7, lastName);
             createTicketStatement.setString(8, email);
-            createTicketStatement.setString(9, status);
             createTicketStatement.executeUpdate();
-                        
-            statement.close();
-            connection.close();            
+            
+            String getTicketQuery = "SELECT * FROM tickets WHERE event_id = ? AND user_id = ? AND transaction_id = ?";
+            PreparedStatement getTicketStatement = connection.prepareStatement(getTicketQuery);
+            getTicketStatement.setInt(1, eventID);
+            getTicketStatement.setInt(2, userID);
+            getTicketStatement.setInt(3, transactionID);
+            ResultSet result = getTicketStatement.executeQuery();
+            
+            if (result.next()) {
+                int ID = result.getInt("id");
+                int eventId = result.getInt("event_id");
+                int userId = result.getInt("user_id");
+                int transactionId = result.getInt("transaction_id");
+                String resultType = result.getString("type");
+                double resultPrice = result.getDouble("price");
+                String resultFirstName = result.getString("first_name");
+                String resultLastName = result.getString("last_name");
+                String resultEmail = result.getString("email");
+                Date created = new Date(result.getTimestamp("created").getTime());
+                Date updated = new Date(result.getTimestamp("updated").getTime());
+                String status = result.getString("status");
+                                                
+                Ticket ticket = new Ticket(ID, eventId, userId, transactionId, resultType, resultPrice, resultFirstName, resultLastName, resultEmail , created, updated, status);
+
+                result.close();
+                statement.close();
+                connection.close();            
+                
+                return ticket;
+            }            
         } catch (SQLException ex) {
             Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,8 +103,6 @@ public class TicketService {
     @WebResult(name = "Ticket")
     public ArrayList<Ticket> getTicketsByUserID(@WebParam(name = "userID") int userID) {
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
-
-        System.out.println("get tickets by user id");
         
         try {
             new Driver();
@@ -101,8 +125,6 @@ public class TicketService {
                 String lastName = result.getString("last_name");
                 String email = result.getString("email");
                 Date created = new Date(result.getTimestamp("created").getTime());
-                System.out.println("created");
-                System.out.println(created);
                 Date updated = new Date(result.getTimestamp("updated").getTime());
                 String status = result.getString("status");
                                                 
@@ -120,5 +142,100 @@ public class TicketService {
         return tickets;
     }
     
-    
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getTicketsByEventID")
+    @WebResult(name = "Ticket")
+    public ArrayList<Ticket> getTicketsByEventID(@WebParam(name = "eventID") int eventID) {
+        ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+        
+        try {
+            new Driver();
+            Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
+            Statement statement = connection.createStatement();
+            
+            String getTicketsByEventIdQuery = "SELECT * FROM tickets WHERE event_id = ?";
+            PreparedStatement getTicketsByEventIdStatement = connection.prepareStatement(getTicketsByEventIdQuery);
+            getTicketsByEventIdStatement.setInt(1, eventID);
+            ResultSet result = getTicketsByEventIdStatement.executeQuery();
+            
+            while (result.next()) {
+                int ID = result.getInt("id");
+                int eventId = result.getInt("event_id");
+                int userID = result.getInt("user_id");
+                int transactionID = result.getInt("transaction_id");
+                String type = result.getString("type");
+                double price = result.getDouble("price");
+                String firstName = result.getString("first_name");
+                String lastName = result.getString("last_name");
+                String email = result.getString("email");
+                Date created = new Date(result.getTimestamp("created").getTime());
+                Date updated = new Date(result.getTimestamp("updated").getTime());
+                String status = result.getString("status");
+                                                
+                Ticket ticket = new Ticket(ID, eventId, userID, transactionID, type, price, firstName, lastName, email , created, updated, status);
+                tickets.add(ticket);
+            }
+            
+            result.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException ex){
+            Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+        return tickets;
+    }    
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "cancelTicket")
+    @WebResult(name = "Ticket")
+    public Ticket cancelTicket(@WebParam(name = "ticketID") int ticketID) {
+        try {
+            new Driver();
+            Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
+            Statement statement = connection.createStatement();
+            
+            String cancelTicketQuery = "UPDATE tickets SET status = ? WHERE id = ?";
+            PreparedStatement cancelTicketStatement = connection.prepareStatement(cancelTicketQuery);
+            cancelTicketStatement.setString(1, "CANCELLED");
+            cancelTicketStatement.setInt(2, ticketID);
+            cancelTicketStatement.executeUpdate();
+
+            String getTicketQuery = "SELECT * FROM tickets WHERE id = ?";
+            PreparedStatement getTicketStatement = connection.prepareStatement(getTicketQuery);
+            getTicketStatement.setInt(1, ticketID);
+            ResultSet result = getTicketStatement.executeQuery();
+            
+            if (result.next()) {
+                int ID = result.getInt("id");
+                int eventID = result.getInt("event_id");
+                int userId = result.getInt("user_id");
+                int transactionID = result.getInt("transaction_id");
+                String type = result.getString("type");
+                double price = result.getDouble("price");
+                String firstName = result.getString("first_name");
+                String lastName = result.getString("last_name");
+                String email = result.getString("email");
+                Date created = new Date(result.getTimestamp("created").getTime());
+                Date updated = new Date(result.getTimestamp("updated").getTime());
+                String status = result.getString("status");
+                                                
+                Ticket ticket = new Ticket(ID, eventID, userId, transactionID, type, price, firstName, lastName, email , created, updated, status);
+                result.close();
+                statement.close();
+                connection.close();
+
+                return ticket;
+            }
+            
+        } catch (SQLException ex){
+            Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+        return null;
+    }    
 }
