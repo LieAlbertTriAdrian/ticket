@@ -4,6 +4,38 @@
     <service name="TicketService">
       <implementation-class>TicketService.TicketService</implementation-class>
     </service>
+    <service name="EventService">
+      <implementation-class>EventService.EventService</implementation-class>
+      <wsdl-url>file:/home/ivan/Downloads/EventService.wsdl</wsdl-url>
+      <local-wsdl-file>EventService.wsdl</local-wsdl-file>
+      <service-name>EventService</service-name>
+      <port-name>EventServicePort</port-name>
+      <package-name>eventservice</package-name>
+      <catalog-file>catalog.xml</catalog-file>
+      <use-provider>false</use-provider>
+      <wsimport-options>
+        <wsimport-option>
+          <wsimport-option-name>extension</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>verbose</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>fork</wsimport-option-name>
+          <wsimport-option-value>false</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xnocompile</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xendorsed</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+      </wsimport-options>
+    </service>
   </services>
   <clients/>
   <jsr109>true</jsr109>
