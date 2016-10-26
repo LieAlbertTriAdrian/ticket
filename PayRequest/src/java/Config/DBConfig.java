@@ -10,7 +10,7 @@ package Config;
  * @author alberttriadrian
  */
 public class DBConfig {
-    public static String dbName = "ticket_for_events";
+    public static String dbAdress = "jdbc:mysql://localhost:3306/ticket_for_events?zeroDateTimeBehavior=convertToNull";
     public static String dbUsername = "root";
     public static String dbPassword = "alberttriadrian";
 }
