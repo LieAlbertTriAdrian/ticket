@@ -15,14 +15,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "Event")
 public class Event {
+    @XmlElement(name="ID", required=true)
+    private int ID;
     @XmlElement(name="address", required=true)
     private String address;
     @XmlElement(name="city", required=true)
     private String city;
     @XmlElement(name="country", required=true)
     private String country;
-    @XmlElement(name="createdAt", required=true)
-    private Date createdAt;
     @XmlElement(name="description", required=true)
     private String description;
     @XmlElement(name="endTime", required=true)
@@ -43,164 +43,167 @@ public class Event {
     private String tags;
     @XmlElement(name="type", required=true)
     private String type;
-    @XmlElement(name="updatedAt", required=true)
-    private Date updatedAt;
-    @XmlElement(name="userId", required=true)
-    private int userId;
+    @XmlElement(name="userID", required=true)
+    private int userID;
+    @XmlElement(name="created", required=true)
+    private Date created;
+    @XmlElement(name="updated", required=true)
+    private Date updated;
+    
     
     public Event() {
         
     }
     
-    public Event(String address, String city, String country, Date createdAt,
+    public Event(int ID, String address, String city, String country, Date created,
             String description, Date endTime, String name, String pictureurl,
             int postalCode, Date startTime, String state, String status,
-            String tags, String type, Date updatedAt, int userId) {
+            String tags, String type, int userID, Date updated) {
+        this.ID = ID;
+        this.name = name;
         this.address = address;
         this.city = city;
         this.country = country;
-        this.createdAt = createdAt;
         this.description = description;
-        this.endTime = endTime;
-        this.name = name;
+        
         this.pictureUrl = pictureUrl;
         this.postalCode = postalCode;
         this.startTime = startTime;
+        this.endTime = endTime;
         this.state = state;
         this.status = status;
         this.tags = tags;
         this.type = type;
-        this.updatedAt = updatedAt;
-        this.userId = userId;
+        this.userID = userID;
+        this.created = created;
+        this.updated = updated;
     }
     
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    
-    public String getAddress() {
-        return address;
-    }
-    
-    public void setCity(String city) {
-        this.city = city;
-    }
-    
-    public String getCity() {
-        return city;
-    }
-    
-    public void setCountry(String country) {
-        this.country = country;
-    }
-    
-    public String getCountry() {
-        return country;
-    }
-    
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-    
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-    
-    public void setDescription(String country) {
-        this.country = country;
-    }
-    
-    public String getDescription() {
-        return country;
-    }
-    
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-    
-    public Date getEndTime() {
-        return endTime;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-    
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-    
-    public void setPostal(int postalCode) {
-        this.postalCode = postalCode;
-    }
-    
-    public int getPostalCode() {
-        return postalCode;
-    }
-    
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-    
-    public Date getStartTime() {
-        return startTime;
-    }
-    
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-    
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-    
-    public void setState(String state) {
-        this.state = state;
-    }
-    
-    public String getState() {
-        return state;
-    }
-    
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    
-    public String getStatus() {
-        return status;
-    }
-    
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-    
-    public String getTags() {
-        return tags;
-    }
-    
-    public void setType(String type) {
-        this.type = type;
-    }
-    
-    public String getType() {
-        return type;
-    }
-    
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-    
-    public int getUserId() {
-        return userId;
-    }
-
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
+//    
+//    public String getAddress() {
+//        return address;
+//    }
+//    
+//    public void setCity(String city) {
+//        this.city = city;
+//    }
+//    
+//    public String getCity() {
+//        return city;
+//    }
+//    
+//    public void setCountry(String country) {
+//        this.country = country;
+//    }
+//    
+//    public String getCountry() {
+//        return country;
+//    }
+//    
+//    public void setDescription(String country) {
+//        this.country = country;
+//    }
+//    
+//    public String getDescription() {
+//        return country;
+//    }
+//    
+//    public void setEndTime(Date endTime) {
+//        this.endTime = endTime;
+//    }
+//    
+//    public Date getEndTime() {
+//        return endTime;
+//    }
+//    
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//    
+//    public String getName() {
+//        return name;
+//    }
+//    
+//    public void setPictureUrl(String pictureUrl) {
+//        this.pictureUrl = pictureUrl;
+//    }
+//    
+//    public String getPictureUrl() {
+//        return pictureUrl;
+//    }
+//    
+//    public void setPostal(int postalCode) {
+//        this.postalCode = postalCode;
+//    }
+//    
+//    public int getPostalCode() {
+//        return postalCode;
+//    }
+//    
+//    public void setStartTime(Date startTime) {
+//        this.startTime = startTime;
+//    }
+//    
+//    public Date getStartTime() {
+//        return startTime;
+//    }
+//    
+//    public void setState(String state) {
+//        this.state = state;
+//    }
+//    
+//    public String getState() {
+//        return state;
+//    }
+//    
+//    public void setStatus(String status) {
+//        this.status = status;
+//    }
+//    
+//    public String getStatus() {
+//        return status;
+//    }
+//    
+//    public void setTags(String tags) {
+//        this.tags = tags;
+//    }
+//    
+//    public String getTags() {
+//        return tags;
+//    }
+//    
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//    
+//    public String getType() {
+//        return type;
+//    }
+//    
+//    public void setUserId(int userID) {
+//        this.userID = userID;
+//    }
+//    
+//    public int getUserId() {
+//        return userID;
+//    }
+//    
+//    public void setCreated(Date created) {
+//        this.created = created;
+//    }
+//    
+//    public Date getCreated() {
+//        return created;
+//    }
+//
+//    public void setUpdated(Date updated) {
+//        this.updated = updated;
+//    }
+//    
+//    public Date getUpdated() {
+//        return updated;
+//    }
 }
-
