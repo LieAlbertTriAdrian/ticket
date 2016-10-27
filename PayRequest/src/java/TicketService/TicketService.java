@@ -30,14 +30,6 @@ public class TicketService {
     private String dbPassword = DBConfig.dbPassword;
 
     /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
-
-    /**
      * Web service operation
      */
     @WebMethod(operationName = "createTicket")
@@ -141,6 +133,60 @@ public class TicketService {
 
         return tickets;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "updateTicket")
+    @WebResult(name = "updateTicket")
+    public Ticket updateTicket(@WebParam(name = "ticketID") int ticketID, @WebParam(name = "email") String email, @WebParam(name = "firstname") String firstname, @WebParam(name = "lastname") String lastname) {
+        try {
+            new Driver();
+            Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
+            Statement statement = connection.createStatement();
+            
+            String updateTicketQuery = "UPDATE tickets SET email = ?, first_name = ?, last_name = ? WHERE id = ?";
+            PreparedStatement updateTicketStatement = connection.prepareStatement(updateTicketQuery);
+            updateTicketStatement.setString(1, email);
+            updateTicketStatement.setString(2, firstname);
+            updateTicketStatement.setString(3, lastname);
+            updateTicketStatement.setInt(4, ticketID);
+
+            updateTicketStatement.executeUpdate();
+
+            String getTicketQuery = "SELECT * FROM tickets WHERE id = ?";
+            PreparedStatement getTicketStatement = connection.prepareStatement(getTicketQuery);
+            getTicketStatement.setInt(1, ticketID);
+            ResultSet result = getTicketStatement.executeQuery();
+            
+            if (result.next()) {
+                int ID = result.getInt("id");
+                int eventId = result.getInt("event_id");
+                int userId = result.getInt("user_id");
+                int transactionId = result.getInt("transaction_id");
+                String resultType = result.getString("type");
+                double resultPrice = result.getDouble("price");
+                String resultFirstName = result.getString("first_name");
+                String resultLastName = result.getString("last_name");
+                String resultEmail = result.getString("email");
+                Date created = new Date(result.getTimestamp("created").getTime());
+                Date updated = new Date(result.getTimestamp("updated").getTime());
+                String status = result.getString("status");
+                                                
+                Ticket ticket = new Ticket(ID, eventId, userId, transactionId, resultType, resultPrice, resultFirstName, resultLastName, resultEmail , created, updated, status);
+
+                result.close();
+                statement.close();
+                connection.close();            
+                
+                return ticket;
+            }            
+        } catch (SQLException ex){
+            Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+        return null;
+    }
     
     /**
      * Web service operation
@@ -238,4 +284,144 @@ public class TicketService {
 
         return null;
     }    
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "createEventTicket")
+    @WebResult(name = "EventTicket")
+    public EventTicket createEventTicket(@WebParam(name = "eventID") int eventID, @WebParam(name = "name") String name, @WebParam(name = "description") String description, @WebParam(name = "price") double price, @WebParam(name = "left") int left) {
+        try {
+            new Driver();
+            Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
+            Statement statement = connection.createStatement();
+
+            System.out.println("insert into event tickets");
+            
+            String createEventTicketQuery = "INSERT INTO event_tickets (event_id, name, description, price, `left`) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement createEventTicketStatement = connection.prepareStatement(createEventTicketQuery);
+            createEventTicketStatement.setInt(1, eventID);
+            createEventTicketStatement.setString(2, name);
+            createEventTicketStatement.setString(3, description);
+            createEventTicketStatement.setDouble(4, price);
+            createEventTicketStatement.setInt(5, left);
+            createEventTicketStatement.executeUpdate();
+            
+            String getEventTicketQuery = "SELECT * FROM event_tickets WHERE event_id = ?";
+            PreparedStatement getEventTicketStatement = connection.prepareStatement(getEventTicketQuery);
+            getEventTicketStatement.setInt(1, eventID);
+            ResultSet result = getEventTicketStatement.executeQuery();
+            
+            if (result.next()) {
+                int ID = result.getInt("id");
+                int eventId = result.getInt("event_id");
+                String resultName = result.getString("name");
+                String resultDescription = result.getString("description");
+                double resultPrice = result.getDouble("price");
+                int resultLeft = result.getInt("left");
+                                                
+                EventTicket eventTicket = new EventTicket(ID, eventId, resultName, resultDescription, resultPrice, resultLeft);
+
+                result.close();
+                statement.close();
+                connection.close();            
+                
+                return eventTicket;
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return null;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "decreaseLeftEventTicket")
+    @WebResult(name = "EventTicket")
+    public EventTicket decreaseLeftEventTicket(@WebParam(name = "eventTicketID") int eventTicketID, @WebParam(name = "numberOfTicket") int numberOfTicket) {
+        try {
+            new Driver();
+            Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
+            Statement statement = connection.createStatement();
+
+            String getEventTicketQuery = "SELECT * FROM event_tickets WHERE id = ?";
+            PreparedStatement getEventTicketStatement = connection.prepareStatement(getEventTicketQuery);
+            getEventTicketStatement.setInt(1, eventTicketID);
+            ResultSet result = getEventTicketStatement.executeQuery();
+            
+            if (result.next()) {
+                int ID = result.getInt("id");
+                int eventId = result.getInt("event_id");
+                String name = result.getString("name");
+                String description = result.getString("description");
+                double price = result.getDouble("price");
+                int left = result.getInt("left");
+                int updatedLeft = (left - numberOfTicket < 0) ? 0 : (left - numberOfTicket); 
+                
+                String decreaseLeftEventTicketQuery = "UPDATE event_tickets SET `left` = ? WHERE id = ?";
+                PreparedStatement decreaseLeftEventTicketStatement = connection.prepareStatement(decreaseLeftEventTicketQuery);
+                decreaseLeftEventTicketStatement.setInt(1, updatedLeft);
+                decreaseLeftEventTicketStatement.setInt(2, eventTicketID);
+                decreaseLeftEventTicketStatement.executeUpdate();
+                                                                
+                EventTicket eventTicket = new EventTicket(ID, eventId, name, description, price, updatedLeft);
+                result.close();
+                statement.close();
+                connection.close();
+
+                return eventTicket;
+            }            
+        } catch (SQLException ex){
+            Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+        return null;
+    }    
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "updateEventTicket")
+    @WebResult(name = "EventTicket")
+    public EventTicket updateEventTicket(@WebParam(name = "eventTicketID") int eventTicketID, @WebParam(name = "description") String description, @WebParam(name = "price") double price) {
+        try {
+            new Driver();
+            Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
+            Statement statement = connection.createStatement();
+            
+            String updateEventTicketQuery = "UPDATE event_tickets SET description = ?, price = ? WHERE id = ?";
+            PreparedStatement updateEventTicketStatement = connection.prepareStatement(updateEventTicketQuery);
+            updateEventTicketStatement.setString(1, description);
+            updateEventTicketStatement.setDouble(2, price);
+            updateEventTicketStatement.setInt(3, eventTicketID);
+            updateEventTicketStatement.executeUpdate();
+
+            String getEventTicketQuery = "SELECT * FROM event_tickets WHERE id = ?";
+            PreparedStatement getEventTicketStatement = connection.prepareStatement(getEventTicketQuery);
+            getEventTicketStatement.setInt(1, eventTicketID);
+            ResultSet result = getEventTicketStatement.executeQuery();
+            
+            if (result.next()) {
+                int ID = result.getInt("id");
+                int eventId = result.getInt("event_id");
+                String resultName = result.getString("name");
+                String resultDescription = result.getString("description");
+                double resultPrice = result.getDouble("price");
+                int left = result.getInt("left");
+                                                
+                EventTicket eventTicket = new EventTicket(ID, eventId, resultName, resultDescription, resultPrice, left);
+                result.close();
+                statement.close();
+                connection.close();
+
+                return eventTicket;
+            }            
+        } catch (SQLException ex){
+            Logger.getLogger(TicketService.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+
+        return null;
+    }
 }
