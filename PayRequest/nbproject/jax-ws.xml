@@ -4,6 +4,9 @@
     <service name="TicketService">
       <implementation-class>TicketService.TicketService</implementation-class>
     </service>
+    <service name="EventService">
+      <implementation-class>EventService.EventService</implementation-class>
+    </service>
   </services>
   <clients/>
   <jsr109>true</jsr109>

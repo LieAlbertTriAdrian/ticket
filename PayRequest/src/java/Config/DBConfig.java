@@ -12,5 +12,5 @@ package Config;
 public class DBConfig {
     public static String dbAdress = "jdbc:mysql://localhost:3306/ticket_for_events?zeroDateTimeBehavior=convertToNull";
     public static String dbUsername = "root";
-    public static String dbPassword = "alberttriadrian";
+    public static String dbPassword = "pass1234";
 }
