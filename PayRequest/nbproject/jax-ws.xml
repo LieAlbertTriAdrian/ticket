@@ -7,6 +7,9 @@
     <service name="EventService">
       <implementation-class>EventService.EventService</implementation-class>
     </service>
+    <service name="TransactionService">
+      <implementation-class>TransactionService.TransactionService</implementation-class>
+    </service>
   </services>
   <clients/>
   <jsr109>true</jsr109>
