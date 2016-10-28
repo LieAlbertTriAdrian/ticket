@@ -16,8 +16,12 @@ import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,14 +34,6 @@ public class EventService {
     private String dbAddress = DBConfig.dbAdress;
     private String dbUsername = DBConfig.dbUsername;
     private String dbPassword = DBConfig.dbPassword;
-    
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
     
     @WebMethod(operationName = "getEvents")
     @WebResult(name = "Event")
@@ -53,20 +49,91 @@ public class EventService {
             Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
             Statement statement = connection.createStatement();
             
-            eventOrganizer = eventOrganizer.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
-            location = location.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
-            name = name.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+//            if (eventOrganizer != null) {
+//                eventOrganizer = eventOrganizer.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+//            }
+//            if (location != null) {
+//                location = location.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+//            }
+//            if (name != null) {
+//                name = name.replace("!", "!!").replace("%", "!%").replace("_", "!_").replace("[", "![");
+//            }
             
-            String getEventsQuery = "SELECT * FROM events WHERE name LIKE ? "
-                    + "AND (address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ?) ESCAPE '!'";
+            boolean filterFound = false;
+            String getEventsQuery = "SELECT * FROM events ";
+            if (eventOrganizer != null) {
+                filterFound = true;
+                getEventsQuery += "INNER JOIN users ON users.id = events.userID WHERE users.name LIKE ? ";
+            }
+            if (name != null) {
+                filterFound = true;
+                if (!filterFound) {
+                    getEventsQuery += "WHERE events.name LIKE ? ";
+                } else {
+                    getEventsQuery += "AND events.name LIKE ? ";
+                }
+            }
+            if (location != null) {
+                if (!filterFound) {
+                    getEventsQuery += "WHERE ";
+                } else {
+                  getEventsQuery += "AND ";
+                }
+                getEventsQuery += "(events.address LIKE ? OR events.city LIKE ? OR events.state LIKE ? OR events.country LIKE ?) ";
+            }
+            
+            int n = 1;
             PreparedStatement getEventsStatement = connection.prepareStatement(getEventsQuery);
-            getEventsStatement.setString(1, name);
+            if (eventOrganizer != null) {
+                getEventsStatement.setString(n, "%" + eventOrganizer + "%");
+                n++;
+            }
+            if (name != null) {
+                getEventsStatement.setString(n, "%" + name + "%");
+                n++;
+            }
+            if (location != null) {
+                getEventsStatement.setString(n, "%" + location + "%");
+                getEventsStatement.setString(n + 1, "%" + location + "%");
+                getEventsStatement.setString(n + 2, "%" + location + "%");
+                getEventsStatement.setString(n + 3, "%" + location + "%");
+                n += 4;
+            }
+            System.out.println(getEventsStatement);
+////                    + "AND (address LIKE ? OR city LIKE ? OR state LIKE ? OR country LIKE ?) ESCAPE '!'";
+////            PreparedStatement getEventsStatement = connection.prepareStatement(getEventsQuery);
+//            getEventsStatement.setString(1, name);
             ResultSet rs = getEventsStatement.executeQuery();
         
             while(rs.next()){
-                Event e = new Event();
-                events.add(e);
+                int ID = rs.getInt("ID");
+                String _name = rs.getString("name");
+                String _address = rs.getString("address");
+                String _city = rs.getString("city");
+                String _state = rs.getString("state");
+                String _country = rs.getString("country");
+                int _postalCode = rs.getInt("postalCode");
+                String _description = rs.getString("description");
+                String _pictureUrl = rs.getString("pictureUrl");
+                String _status = rs.getString("status");
+                String _tags = rs.getString("tags");
+                String _type = rs.getString("type");
+                int _userID = rs.getInt("userID");
+                Date _created = (rs.getTimestamp("created") != null) ? new Date(rs.getTimestamp("created").getTime()) : null;
+                Date _updated = (rs.getTimestamp("updated") != null) ? new Date(rs.getTimestamp("created").getTime()) : null;
+                Date _startTime = (rs.getTimestamp("startTime") != null) ? new Date(rs.getTimestamp("startTime").getTime()) : null;
+                Date _endTime = (rs.getTimestamp("endTime") != null) ? new Date(rs.getTimestamp("endTime").getTime()) : null;
+                
+                Event event = new Event (ID, _address, _city, _country, _created,
+                        _description, _endTime, _name, _pictureUrl,
+                        _postalCode, _startTime, _state, _status,
+                        _tags, _type, _userID, _updated);
+                
+                events.add(event);
             }
+            rs.close();
+            statement.close();
+            connection.close();
         
         } catch (SQLException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,9 +178,9 @@ public class EventService {
         @WebParam(name = "tags") String tags,
         @WebParam(name = "type") String type,
         @WebParam(name = "userID") int userID,
-        @WebParam(name = "startTime") Date startTime,
-        @WebParam(name = "endTime") Date endTime
-    ) {
+        @WebParam(name = "startTime") String startTime,
+        @WebParam(name = "endTime") String endTime
+    ) throws ParseException {
 
         Event event = null;
 
@@ -124,9 +191,10 @@ public class EventService {
             
             String createEventQuery = "INSERT INTO events (name, address, city, state,"
                     + " country, postalCode, description, pictureUrl, status, tags, type, userID,"
-                    + " startTime, endTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    + " startTime, endTime, created, updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement createEventStatement = connection.prepareStatement(createEventQuery);
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+            PreparedStatement createEventStatement = connection.prepareStatement(createEventQuery, Statement.RETURN_GENERATED_KEYS);
             createEventStatement.setString(1, name);
             createEventStatement.setString(2, address);
             createEventStatement.setString(3, city);
@@ -139,8 +207,10 @@ public class EventService {
             createEventStatement.setString(10, tags);
             createEventStatement.setString(11, type);
             createEventStatement.setInt(12, userID);
-            createEventStatement.setDate(13, new java.sql.Date(startTime.getTime()));
-            createEventStatement.setDate(14, new java.sql.Date(endTime.getTime()));
+            createEventStatement.setDate(13, new java.sql.Date(format.parse(startTime).getTime()));
+            createEventStatement.setDate(14, new java.sql.Date(format.parse(endTime).getTime()));
+            createEventStatement.setDate(15, new java.sql.Date(new Date().getTime()));
+            createEventStatement.setDate(16, new java.sql.Date(new Date().getTime()));
             createEventStatement.executeUpdate();
             ResultSet rs = createEventStatement.getGeneratedKeys();
             
@@ -150,39 +220,7 @@ public class EventService {
             }
             
             if (eventID != 0) {
-                String getEventQuery = "SELECT * FROM events WHERE id = ?";
-                PreparedStatement getEventStatement = connection.prepareStatement(getEventQuery);
-                getEventStatement.setInt(1, eventID);
-                ResultSet rs2 = getEventStatement.executeQuery();
-                
-                if (rs2.next()) {
-                    int ID = rs2.getInt("id");
-                    String _name = rs2.getString("name");
-                    String _address = rs2.getString("address");
-                    String _city = rs2.getString("city");
-                    String _state = rs2.getString("state");
-                    String _country = rs2.getString("country");
-                    int _postalCode = rs2.getInt("postalCode");
-                    String _description = rs2.getString("description");
-                    String _pictureUrl = rs2.getString("pictureUrl");
-                    String _status = rs2.getString("status");
-                    String _tags = rs2.getString("tags");
-                    String _type = rs2.getString("type");
-                    int _userID = rs2.getInt("userID");
-                    Date _created = new Date(rs2.getTimestamp("created").getTime());
-                    Date _updated = new Date(rs2.getTimestamp("updated").getTime());
-                    Date _startTime = new Date(rs2.getTimestamp("startTime").getTime());
-                    Date _endTime = new Date(rs2.getTimestamp("endTime").getTime());
-
-                    event = new Event (ID, _address, _city, _country, _created,
-                            _description, _endTime, _name, _pictureUrl,
-                            _postalCode, _startTime, _state, _status,
-                            _tags, _type, _userID, _updated);
-
-                    rs2.close();
-                    statement.close();
-                    connection.close();   
-                }
+                event = getEventDetailData(eventID);
             }
             
             
@@ -210,9 +248,9 @@ public class EventService {
         @WebParam(name = "tags") String tags,
         @WebParam(name = "type") String type,
         @WebParam(name = "userID") int userID,
-        @WebParam(name = "startTime") Date startTime,
-        @WebParam(name = "endTime") Date endTime
-    ) {
+        @WebParam(name = "startTime") String startTime,
+        @WebParam(name = "endTime") String endTime
+    ) throws ParseException {
         Event event = new Event();
 
         try {
@@ -220,69 +258,31 @@ public class EventService {
             Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
             Statement statement = connection.createStatement();
             
-            String createEventQuery = "UPDATE events SET name = ?, address = ?, city = ?, state = ?,"
-                    + " country = ?, postalCode = ?, description = ?, pictureUrl = ?, status = ?, tags = ?, "
-                    + " type =  = ?, userID = ?, startTime  = ?, endTime = ? WHERE ID = ?";
+            String editEventQuery = "UPDATE events SET name = ?, address = ?, city = ?, state = ?,"
+                    + " country = ?, postalCode = ?, description = ?, pictureUrl = ?, status = ?, tags = ?,"
+                    + " type = ?, userID = ?, startTime  = ?, endTime = ? WHERE ID = ?";
 
-            PreparedStatement createEventStatement = connection.prepareStatement(createEventQuery);
-            createEventStatement.setString(1, name);
-            createEventStatement.setString(2, address);
-            createEventStatement.setString(3, city);
-            createEventStatement.setString(4, state);
-            createEventStatement.setString(5, country);
-            createEventStatement.setInt(6, postalCode);
-            createEventStatement.setString(7, description);
-            createEventStatement.setString(8, pictureUrl);
-            createEventStatement.setString(9, status);
-            createEventStatement.setString(10, tags);
-            createEventStatement.setString(11, type);
-            createEventStatement.setInt(12, userID);
-            createEventStatement.setDate(13, new java.sql.Date(startTime.getTime()));
-            createEventStatement.setDate(14, new java.sql.Date(endTime.getTime()));
-            createEventStatement.setInt(15, ID);
-            createEventStatement.executeUpdate();
-            ResultSet rs = createEventStatement.getGeneratedKeys();
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+            PreparedStatement editEventStatement = connection.prepareStatement(editEventQuery);
+            editEventStatement.setString(1, name);
+            editEventStatement.setString(2, address);
+            editEventStatement.setString(3, city);
+            editEventStatement.setString(4, state);
+            editEventStatement.setString(5, country);
+            editEventStatement.setInt(6, postalCode);
+            editEventStatement.setString(7, description);
+            editEventStatement.setString(8, pictureUrl);
+            editEventStatement.setString(9, status);
+            editEventStatement.setString(10, tags);
+            editEventStatement.setString(11, type);
+            editEventStatement.setInt(12, userID);
+            editEventStatement.setDate(13, new java.sql.Date(format.parse(startTime).getTime()));
+            editEventStatement.setDate(14, new java.sql.Date(format.parse(endTime).getTime()));
+            editEventStatement.setInt(15, ID);
+            System.out.println(editEventStatement);
+            editEventStatement.executeUpdate();
             
-            int eventID = 0;
-            while (rs.next()) {
-                eventID = rs.getInt(1);
-            }
-            
-            if (eventID != 0) {
-                String getEventQuery = "SELECT * FROM events WHERE id = ?";
-                PreparedStatement getEventStatement = connection.prepareStatement(getEventQuery);
-                getEventStatement.setInt(1, ID);
-                ResultSet rs2 = getEventStatement.executeQuery();
-                
-                if (rs2.next()) {
-                    String _name = rs2.getString("name");
-                    String _address = rs2.getString("address");
-                    String _city = rs2.getString("city");
-                    String _state = rs2.getString("state");
-                    String _country = rs2.getString("country");
-                    int _postalCode = rs2.getInt("postalCode");
-                    String _description = rs2.getString("description");
-                    String _pictureUrl = rs2.getString("pictureUrl");
-                    String _status = rs2.getString("status");
-                    String _tags = rs2.getString("tags");
-                    String _type = rs2.getString("type");
-                    int _userID = rs2.getInt("userID");
-                    Date _created = new Date(rs2.getTimestamp("created").getTime());
-                    Date _updated = new Date(rs2.getTimestamp("updated").getTime());
-                    Date _startTime = new Date(rs2.getTimestamp("startTime").getTime());
-                    Date _endTime = new Date(rs2.getTimestamp("endTime").getTime());
-
-                    event = new Event (ID, _address, _city, _country, _created,
-                            _description, _endTime, _name, _pictureUrl,
-                            _postalCode, _startTime, _state, _status,
-                            _tags, _type, _userID, _updated);
-
-                    rs2.close();
-                    statement.close();
-                    connection.close();   
-                }
-            }
-            
+            event = getEventDetailData(ID);
             
         } catch (SQLException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
@@ -294,19 +294,22 @@ public class EventService {
     @WebMethod(operationName = "getEventDetail")
     @WebResult(name = "Event")
     public Event getEventDetail(@WebParam(name = "ID") int ID) {
-        
+        Event event = getEventDetailData(ID);
+        return event;
+    }
+
+    private Event getEventDetailData(int ID) {
         Event event = null;
 
         try {
             new Driver();
             Connection connection = DriverManager.getConnection(dbAddress,dbUsername,dbPassword);
             Statement statement = connection.createStatement();
-            
             String getEventDetailQuery = "SELECT * FROM events WHERE id = ?";
             PreparedStatement getEventDetailStatement = connection.prepareStatement(getEventDetailQuery);
             getEventDetailStatement.setInt(1, ID);
             ResultSet result = getEventDetailStatement.executeQuery();
-            
+
             if (result.next()) {
 
                 String name = result.getString("name");
@@ -325,7 +328,7 @@ public class EventService {
                 Date updated = new Date(result.getTimestamp("updated").getTime());
                 Date startTime = new Date(result.getTimestamp("startTime").getTime());
                 Date endTime = new Date(result.getTimestamp("endTime").getTime());
-                                                
+
                 event = new Event (ID, address, city, country, created,
                         description, endTime, name, pictureUrl,
                         postalCode, startTime, state, status,
@@ -334,15 +337,13 @@ public class EventService {
                 result.close();
                 statement.close();
                 connection.close();            
-                
-                return event;
-            }
+            } 
+            
         } catch (SQLException ex) {
             Logger.getLogger(EventService.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return event;
     }
-
 
 }

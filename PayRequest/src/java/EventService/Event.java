@@ -50,7 +50,6 @@ public class Event {
     @XmlElement(name="updated", required=true)
     private Date updated;
     
-    
     public Event() {
         
     }
