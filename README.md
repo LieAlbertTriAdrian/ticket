@@ -2,11 +2,28 @@
 
 
 ## Deskripsi Singkat
-.... your description .... must go here
+
+Tricket merupakan suatu platform marketplace untuk acara live yang menyediakan pelayanan pada orang-orang untuk menemukan dan membuat acara (events). Platform ini membantu event organizer untuk membuat acara dan menjual tiket. Selain itu, platform ini juga membantu pembeli untuk mengetahui acara sesuai dengan waktu yang mereka inginkan dan kemudian membeli tiket untuk acara yang menarik bagi mereka.
 
 ## Anggota Tim
 
-Setiap kelompok beranggotakan **3 orang**. Mulai dari NIM terkecil
+ * Ivan Andrianto 13513039
+ * Lie, Albert Tri Adrian 13513076
+ * Fitra Rahmamuliani 13513095
+
+
+## Pembagian Tugas
+
+ * Ivan Andrianto - Event Service
+ * Lie, Albert Tri Adrian - Ticket Service + Transaksi Service
+ * Fitra Rahmamuliani - Transaksi Service
+
+## Prosedur Instalasi
+
+ * Open project dengan menggunakan IDE Netbeans
+ * Install server Glassfish (apabila belum terinstall)
+ * Tekan tombol 'Run Project'
+ * Klik kanan pada service yang ingin dicoba, pilih Test Web Service
 
 ## Petunjuk Pengerjaan
 
