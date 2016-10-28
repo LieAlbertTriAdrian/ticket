@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://TicketService/" xmlns:tns="http://TicketService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="cancelTicket" nillable="true" type="tns:cancelTicket"/>
+
+  <xs:element name="cancelTicketResponse" nillable="true" type="tns:cancelTicketResponse"/>
+
+  <xs:element name="createEventTicket" type="tns:createEventTicket"/>
+
+  <xs:element name="createEventTicketResponse" type="tns:createEventTicketResponse"/>
+
+  <xs:element name="createTicket" nillable="true" type="tns:createTicket"/>
+
+  <xs:element name="createTicketResponse" nillable="true" type="tns:createTicketResponse"/>
+
+  <xs:element name="decreaseLeftEventTicket" type="tns:decreaseLeftEventTicket"/>
+
+  <xs:element name="decreaseLeftEventTicketResponse" type="tns:decreaseLeftEventTicketResponse"/>
+
+  <xs:element name="getTicketsByEventId" nillable="true" type="tns:getTicketsByEventId"/>
+
+  <xs:element name="getTicketsByEventIdResponse" nillable="true" type="tns:getTicketsByEventIdResponse"/>
+
+  <xs:element name="getTicketsByUserId" nillable="true" type="tns:getTicketsByUserId"/>
+
+  <xs:element name="getTicketsByUserIdResponse" nillable="true" type="tns:getTicketsByUserIdResponse"/>
+
+  <xs:element name="refundTicket" nillable="true" type="tns:refundTicket"/>
+
+  <xs:element name="refundTicketResponse" nillable="true" type="tns:refundTicketResponse"/>
+
+  <xs:element name="updateEventTicket" type="tns:updateEventTicket"/>
+
+  <xs:element name="updateEventTicketResponse" type="tns:updateEventTicketResponse"/>
+
+  <xs:element name="updateTicket" nillable="true" type="tns:updateTicket"/>
+
+  <xs:element name="updateTicketResponse" nillable="true" type="tns:updateTicketResponse"/>
+
+  <xs:complexType name="refundTicket">
+    <xs:sequence>
+      <xs:element name="ticketId" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refundTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateEventTicket">
+    <xs:sequence>
+      <xs:element name="description" type="xs:string" minOccurs="1"/>
+      <xs:element name="price" type="xs:string" minOccurs="1"/>
+      <xs:element name="email" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateEventTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:eventTicket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="eventTicket">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="updateTicket">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string" minOccurs="1"/>
+      <xs:element name="firstName" type="xs:string" minOccurs="1"/>
+      <xs:element name="lastName" type="xs:string" minOccurs="1"/>
+      <xs:element name="ticketId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="decreaseLeftEventTicket">
+    <xs:sequence>
+      <xs:element name="eventTicketId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="decreaseLeftEventTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:eventTicket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByUserId">
+    <xs:sequence>
+      <xs:element name="userId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByUserIdResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createEventTicket">
+    <xs:sequence>
+      <xs:element name="ticketId" type="xs:string" minOccurs="1"/>
+      <xs:element name="firstName" type="xs:string" minOccurs="1"/>
+      <xs:element name="lastName" type="xs:string" minOccurs="1"/>
+      <xs:element name="email" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createEventTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:eventTicket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByEventId">
+    <xs:sequence>
+      <xs:element name="eventId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByEventIdResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelTicket">
+    <xs:sequence>
+      <xs:element name="ticketId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createTicket">
+    <xs:sequence>
+      <xs:element name="email" type="xs:string" minOccurs="1"/>
+      <xs:element name="eventId" type="xs:string" minOccurs="1"/>
+      <xs:element name="firstName" type="xs:string" minOccurs="1"/>
+      <xs:element name="lastName" type="xs:string" minOccurs="1"/>
+      <xs:element name="price" type="xs:double" minOccurs="1"/>
+      <xs:element name="transactionId" type="xs:string" minOccurs="1"/>
+      <xs:element name="type" type="xs:string" minOccurs="1"/>
+      <xs:element name="userId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:ticket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticket">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+
