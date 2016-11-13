@@ -1,0 +1,17 @@
+/* AUTOMATICALLY GENERATED ON Sun Nov 13 17:32:48 WIB 2016*/
+/* DO NOT EDIT */
+
+grant {
+  permission javax.security.jacc.WebUserDataPermission "/";
+  permission javax.security.jacc.WebResourcePermission "/";
+};
+
+grant      principal * * {
+  permission javax.security.jacc.WebRoleRefPermission "TransactionService", "**";
+  permission javax.security.jacc.WebRoleRefPermission "jsp", "**";
+  permission javax.security.jacc.WebRoleRefPermission "", "**";
+  permission javax.security.jacc.WebRoleRefPermission "TicketService", "**";
+  permission javax.security.jacc.WebRoleRefPermission "EventService", "**";
+  permission javax.security.jacc.WebRoleRefPermission "default", "**";
+};
+
