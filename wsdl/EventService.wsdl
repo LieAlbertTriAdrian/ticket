@@ -6,61 +6,66 @@
       <xsd:import namespace="http://EventService/" schemaLocation="EventService_schema1.xsd"/>
     </xsd:schema>
   </types>
-  <message name="get">
-    <part name="parameters" element="tns:get"/>
+  <message name="deleteEvent">
+    <part name="parameters" element="tns:deleteEvent"/>
   </message>
-  <message name="getResponse">
-    <part name="parameters" element="tns:getResponse"/>
+  <message name="deleteEventResponse">
+    <part name="parameters" element="tns:deleteEventResponse"/>
   </message>
-  <message name="delete">
-    <part name="parameters" element="tns:delete"/>
+  <message name="getEventDetail">
+    <part name="parameters" element="tns:getEventDetail"/>
   </message>
-  <message name="deleteResponse">
-    <part name="parameters" element="tns:deleteResponse"/>
+  <message name="getEventDetailResponse">
+    <part name="parameters" element="tns:getEventDetailResponse"/>
   </message>
-  <message name="create">
-    <part name="parameters" element="tns:create"/>
+  <message name="editEvent">
+    <part name="parameters" element="tns:editEvent"/>
   </message>
-  <message name="createResponse">
-    <part name="parameters" element="tns:createResponse"/>
+  <message name="editEventResponse">
+    <part name="parameters" element="tns:editEventResponse"/>
   </message>
-  <message name="edit">
-    <part name="parameters" element="tns:edit"/>
+  <message name="ParseException">
+    <part name="fault" element="tns:ParseException"/>
   </message>
-  <message name="editResponse">
-    <part name="parameters" element="tns:editResponse"/>
+  <message name="createEvent">
+    <part name="parameters" element="tns:createEvent"/>
   </message>
-  <message name="getDetail">
-    <part name="parameters" element="tns:getDetail"/>
+  <message name="createEventResponse">
+    <part name="parameters" element="tns:createEventResponse"/>
   </message>
-  <message name="getDetailResponse">
-    <part name="parameters" element="tns:getDetailResponse"/>
+  <message name="getEvents">
+    <part name="parameters" element="tns:getEvents"/>
+  </message>
+  <message name="getEventsResponse">
+    <part name="parameters" element="tns:getEventsResponse"/>
   </message>
   <portType name="EventService">
-    <operation name="get">
-      <input wsam:Action="http://EventService/EventService/getRequest" message="tns:get"/>
-      <output wsam:Action="http://EventService/EventService/getResponse" message="tns:getResponse"/>
+    <operation name="deleteEvent">
+      <input wsam:Action="http://EventService/EventService/deleteEventRequest" message="tns:deleteEvent"/>
+      <output wsam:Action="http://EventService/EventService/deleteEventResponse" message="tns:deleteEventResponse"/>
     </operation>
-    <operation name="delete">
-      <input wsam:Action="http://EventService/EventService/deleteRequest" message="tns:delete"/>
-      <output wsam:Action="http://EventService/EventService/deleteResponse" message="tns:deleteResponse"/>
+    <operation name="getEventDetail">
+      <input wsam:Action="http://EventService/EventService/getEventDetailRequest" message="tns:getEventDetail"/>
+      <output wsam:Action="http://EventService/EventService/getEventDetailResponse" message="tns:getEventDetailResponse"/>
     </operation>
-    <operation name="create">
-      <input wsam:Action="http://EventService/EventService/createRequest" message="tns:create"/>
-      <output wsam:Action="http://EventService/EventService/createResponse" message="tns:createResponse"/>
+    <operation name="editEvent">
+      <input wsam:Action="http://EventService/EventService/editEventRequest" message="tns:editEvent"/>
+      <output wsam:Action="http://EventService/EventService/editEventResponse" message="tns:editEventResponse"/>
+      <fault message="tns:ParseException" name="ParseException" wsam:Action="http://EventService/EventService/editEvent/Fault/ParseException"/>
     </operation>
-    <operation name="edit">
-      <input wsam:Action="http://EventService/EventService/editRequest" message="tns:edit"/>
-      <output wsam:Action="http://EventService/EventService/editResponse" message="tns:editResponse"/>
+    <operation name="createEvent">
+      <input wsam:Action="http://EventService/EventService/createEventRequest" message="tns:createEvent"/>
+      <output wsam:Action="http://EventService/EventService/createEventResponse" message="tns:createEventResponse"/>
+      <fault message="tns:ParseException" name="ParseException" wsam:Action="http://EventService/EventService/createEvent/Fault/ParseException"/>
     </operation>
-    <operation name="getDetail">
-      <input wsam:Action="http://EventService/EventService/getDetailRequest" message="tns:getDetail"/>
-      <output wsam:Action="http://EventService/EventService/getDetailResponse" message="tns:getDetailResponse"/>
+    <operation name="getEvents">
+      <input wsam:Action="http://EventService/EventService/getEventsRequest" message="tns:getEvents"/>
+      <output wsam:Action="http://EventService/EventService/getEventsResponse" message="tns:getEventsResponse"/>
     </operation>
   </portType>
   <binding name="EventServicePortBinding" type="tns:EventService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-    <operation name="get">
+    <operation name="deleteEvent">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -69,7 +74,7 @@
         <soap:body use="literal"/>
       </output>
     </operation>
-    <operation name="delete">
+    <operation name="getEventDetail">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -78,7 +83,7 @@
         <soap:body use="literal"/>
       </output>
     </operation>
-    <operation name="create">
+    <operation name="editEvent">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -86,8 +91,11 @@
       <output>
         <soap:body use="literal"/>
       </output>
+      <fault name="ParseException">
+        <soap:fault name="ParseException" use="literal"/>
+      </fault>
     </operation>
-    <operation name="edit">
+    <operation name="createEvent">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -95,8 +103,11 @@
       <output>
         <soap:body use="literal"/>
       </output>
+      <fault name="ParseException">
+        <soap:fault name="ParseException" use="literal"/>
+      </fault>
     </operation>
-    <operation name="getDetail">
+    <operation name="getEvents">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

@@ -10,6 +10,9 @@
     <service name="TransactionService">
       <implementation-class>TransactionService.TransactionService</implementation-class>
     </service>
+    <service name="test">
+      <implementation-class>EventService.test</implementation-class>
+    </service>
   </services>
   <clients/>
   <jsr109>true</jsr109>

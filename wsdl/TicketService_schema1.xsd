@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://TicketService/" xmlns:tns="http://TicketService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="cancelTicket" type="tns:cancelTicket"/>
+
+  <xs:element name="cancelTicketResponse" type="tns:cancelTicketResponse"/>
+
+  <xs:element name="createEventTicket" type="tns:createEventTicket"/>
+
+  <xs:element name="createEventTicketResponse" type="tns:createEventTicketResponse"/>
+
+  <xs:element name="createTicket" type="tns:createTicket"/>
+
+  <xs:element name="createTicketResponse" type="tns:createTicketResponse"/>
+
+  <xs:element name="decreaseLeftEventTicket" type="tns:decreaseLeftEventTicket"/>
+
+  <xs:element name="decreaseLeftEventTicketResponse" type="tns:decreaseLeftEventTicketResponse"/>
+
+  <xs:element name="getTicketsByEventID" type="tns:getTicketsByEventID"/>
+
+  <xs:element name="getTicketsByEventIDResponse" type="tns:getTicketsByEventIDResponse"/>
+
+  <xs:element name="getTicketsByUserID" type="tns:getTicketsByUserID"/>
+
+  <xs:element name="getTicketsByUserIDResponse" type="tns:getTicketsByUserIDResponse"/>
+
+  <xs:element name="updateEventTicket" type="tns:updateEventTicket"/>
+
+  <xs:element name="updateEventTicketResponse" type="tns:updateEventTicketResponse"/>
+
+  <xs:element name="updateTicket" type="tns:updateTicket"/>
+
+  <xs:element name="updateTicketResponse" type="tns:updateTicketResponse"/>
+
+  <xs:complexType name="updateEventTicket">
+    <xs:sequence>
+      <xs:element name="eventTicketID" type="xs:int"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="price" type="xs:double"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateEventTicketResponse">
+    <xs:sequence>
+      <xs:element name="EventTicket" type="tns:eventTicket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="eventTicket">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="updateTicket">
+    <xs:sequence>
+      <xs:element name="ticketID" type="xs:int"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+      <xs:element name="firstname" type="xs:string" minOccurs="0"/>
+      <xs:element name="lastname" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateTicketResponse">
+    <xs:sequence>
+      <xs:element name="updateTicket" type="tns:ticket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ticket">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="decreaseLeftEventTicket">
+    <xs:sequence>
+      <xs:element name="eventTicketID" type="xs:int"/>
+      <xs:element name="numberOfTicket" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="decreaseLeftEventTicketResponse">
+    <xs:sequence>
+      <xs:element name="EventTicket" type="tns:eventTicket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByUserID">
+    <xs:sequence>
+      <xs:element name="userID" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByUserIDResponse">
+    <xs:sequence>
+      <xs:element name="Ticket" type="tns:ticket" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createEventTicket">
+    <xs:sequence>
+      <xs:element name="eventID" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="price" type="xs:double"/>
+      <xs:element name="left" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createEventTicketResponse">
+    <xs:sequence>
+      <xs:element name="EventTicket" type="tns:eventTicket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByEventID">
+    <xs:sequence>
+      <xs:element name="eventID" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTicketsByEventIDResponse">
+    <xs:sequence>
+      <xs:element name="Ticket" type="tns:ticket" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelTicket">
+    <xs:sequence>
+      <xs:element name="ticketID" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelTicketResponse">
+    <xs:sequence>
+      <xs:element name="Ticket" type="tns:ticket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createTicket">
+    <xs:sequence>
+      <xs:element name="eventID" type="xs:int"/>
+      <xs:element name="userID" type="xs:int"/>
+      <xs:element name="transactionID" type="xs:int"/>
+      <xs:element name="type" type="xs:string" minOccurs="0"/>
+      <xs:element name="price" type="xs:double"/>
+      <xs:element name="firstName" type="xs:string" minOccurs="0"/>
+      <xs:element name="lastName" type="xs:string" minOccurs="0"/>
+      <xs:element name="email" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createTicketResponse">
+    <xs:sequence>
+      <xs:element name="Ticket" type="tns:ticket" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

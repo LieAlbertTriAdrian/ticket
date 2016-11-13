@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" targetNamespace="http://EventService/" xmlns:tns="http://EventService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="create" nillable="true" type="tns:create"/>
+  <xs:element name="ParseException" type="tns:ParseException"/>
 
-  <xs:element name="createResponse" nillable="true" type="tns:createResponse"/>
+  <xs:element name="createEvent" type="tns:createEvent"/>
 
-  <xs:element name="delete" nillable="true" type="tns:delete"/>
+  <xs:element name="createEventResponse" type="tns:createEventResponse"/>
 
-  <xs:element name="deleteResponse" nillable="true" type="tns:deleteResponse"/>
+  <xs:element name="deleteEvent" type="tns:deleteEvent"/>
 
-  <xs:element name="edit" nillable="true" type="tns:edit"/>
+  <xs:element name="deleteEventResponse" type="tns:deleteEventResponse"/>
 
-  <xs:element name="editResponse" nillable="true" type="tns:editResponse"/>
+  <xs:element name="editEvent" type="tns:editEvent"/>
 
-  <xs:element name="get" nillable="true" type="tns:get"/>
+  <xs:element name="editEventResponse" type="tns:editEventResponse"/>
 
-  <xs:element name="getDetail" nillable="true" type="tns:getDetail"/>
+  <xs:element name="getEventDetail" type="tns:getEventDetail"/>
 
-  <xs:element name="getDetailResponse" nillable="true" type="tns:getDetailResponse"/>
+  <xs:element name="getEventDetailResponse" type="tns:getEventDetailResponse"/>
 
-  <xs:element name="getResponse" nillable="true" type="tns:getResponse"/>
+  <xs:element name="getEvents" type="tns:getEvents"/>
 
-  <xs:complexType name="delete">
+  <xs:element name="getEventsResponse" type="tns:getEventsResponse"/>
+
+  <xs:complexType name="editEvent">
     <xs:sequence>
-      <xs:element name="id" type="xs:string" minOccurs="0"/>
+      <xs:element name="ID" type="xs:int"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="address" type="xs:string" minOccurs="0"/>
+      <xs:element name="city" type="xs:string" minOccurs="0"/>
+      <xs:element name="state" type="xs:string" minOccurs="0"/>
+      <xs:element name="country" type="xs:string" minOccurs="0"/>
+      <xs:element name="postalCode" type="xs:int"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="pictureUrl" type="xs:string" minOccurs="0"/>
+      <xs:element name="status" type="xs:string" minOccurs="0"/>
+      <xs:element name="tags" type="xs:string" minOccurs="0"/>
+      <xs:element name="type" type="xs:string" minOccurs="0"/>
+      <xs:element name="userID" type="xs:int"/>
+      <xs:element name="startTime" type="xs:string" minOccurs="0"/>
+      <xs:element name="endTime" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="deleteResponse">
+  <xs:complexType name="editEventResponse">
     <xs:sequence>
-      <xs:element name="return" type="tns:event" minOccurs="0"/>
+      <xs:element name="Event" type="tns:event" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -37,62 +53,63 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType name="create">
+  <xs:complexType name="ParseException">
     <xs:sequence>
-      <xs:element name="address" type="xs:string" minOccurs="0"/>
-      <xs:element name="city" type="xs:string" minOccurs="0"/>
-      <xs:element name="country" type="xs:string" minOccurs="0"/>
-      <xs:element name="createdDate" type="xs:dateTime" minOccurs="1"/>
-      <xs:element name="description" type="xs:string" minOccurs="1"/>
-      <xs:element name="eventTimeEnd" type="xs:dateTime" minOccurs="1"/>
-      <xs:element name="eventTimeStart" type="xs:dateTime" minOccurs="1"/>
-      <xs:element name="name" type="xs:string" minOccurs="1"/>
-      <xs:element name="pictureUrl" type="xs:string" minOccurs="0"/>
-      <xs:element name="postalCode" type="xs:string" minOccurs="0"/>
-      <xs:element name="state" type="xs:string" minOccurs="0"/>
-      <xs:element name="status" type="xs:string" minOccurs="1"/>
-      <xs:element name="tags" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="type" type="xs:string" minOccurs="1"/>
-      <xs:element name="udpatedDate" type="xs:dateTime" minOccurs="1"/>
-      <xs:element name="userId" type="xs:string" minOccurs="1"/>
+      <xs:element name="errorOffset" type="xs:int"/>
+      <xs:element name="message" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="createResponse">
+  <xs:complexType name="createEvent">
     <xs:sequence>
-      <xs:element name="return" type="tns:event" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="edit">
-    <xs:sequence>
-      <xs:element name="address" type="xs:string" minOccurs="0"/>
-      <xs:element name="city" type="xs:string" minOccurs="0"/>
-      <xs:element name="country" type="xs:string" minOccurs="0"/>
-      <xs:element name="createdDate" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="description" type="xs:string" minOccurs="0"/>
-      <xs:element name="eventTimeEnd" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="eventTimeStart" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="id" type="xs:string" minOccurs="0"/>
       <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="pictureUrl" type="xs:string" minOccurs="0"/>
-      <xs:element name="postalCode" type="xs:string" minOccurs="0"/>
+      <xs:element name="address" type="xs:string" minOccurs="0"/>
+      <xs:element name="city" type="xs:string" minOccurs="0"/>
       <xs:element name="state" type="xs:string" minOccurs="0"/>
+      <xs:element name="country" type="xs:string" minOccurs="0"/>
+      <xs:element name="postalCode" type="xs:int"/>
+      <xs:element name="description" type="xs:string" minOccurs="0"/>
+      <xs:element name="pictureUrl" type="xs:string" minOccurs="0"/>
       <xs:element name="status" type="xs:string" minOccurs="0"/>
-      <xs:element name="tags" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="tags" type="xs:string" minOccurs="0"/>
       <xs:element name="type" type="xs:string" minOccurs="0"/>
-      <xs:element name="udpatedDate" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="userId" type="xs:string" minOccurs="0"/>
+      <xs:element name="userID" type="xs:int"/>
+      <xs:element name="startTime" type="xs:string" minOccurs="0"/>
+      <xs:element name="endTime" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="editResponse">
+  <xs:complexType name="createEventResponse">
     <xs:sequence>
-      <xs:element name="return" type="tns:event" minOccurs="0"/>
+      <xs:element name="Event" type="tns:event" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="get">
+  <xs:complexType name="getEventDetail">
+    <xs:sequence>
+      <xs:element name="ID" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getEventDetailResponse">
+    <xs:sequence>
+      <xs:element name="Event" type="tns:event" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteEvent">
+    <xs:sequence>
+      <xs:element name="ID" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteEventResponse">
+    <xs:sequence>
+      <xs:element name="Event" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getEvents">
     <xs:sequence>
       <xs:element name="eventOrganizer" type="xs:string" minOccurs="0"/>
       <xs:element name="location" type="xs:string" minOccurs="0"/>
@@ -101,21 +118,9 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="getResponse">
+  <xs:complexType name="getEventsResponse">
     <xs:sequence>
-      <xs:element name="return" type="tns:event" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="getDetail">
-    <xs:sequence>
-      <xs:element name="id" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="getDetailResponse">
-    <xs:sequence>
-      <xs:element name="return" type="tns:event" minOccurs="0"/>
+      <xs:element name="Event" type="tns:event" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
