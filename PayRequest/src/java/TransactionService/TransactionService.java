@@ -95,7 +95,6 @@ public class TransactionService {
             String completeTransactionQuery = "UPDATE transactions SET status = ? WHERE id = ?";
             PreparedStatement completeTransactionStatement = connection.prepareStatement(completeTransactionQuery);
             completeTransactionStatement.setString(1, "COMPLETED");
-            completeTransactionStatement.setInt(2, transactionID);
             completeTransactionStatement.executeUpdate();
 
             String getTransactionQuery = "SELECT * FROM transactions WHERE id = ?";

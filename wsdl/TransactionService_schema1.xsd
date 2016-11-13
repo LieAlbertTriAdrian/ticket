@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" targetNamespace="http://TransactionService/" xmlns:tns="http://TransactionService/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="completeTransaction" type="tns:completeTransaction"/>
+  <xs:element name="payWithCreditCard" nillable="true" type="tns:payWithCreditCard"/>
 
-  <xs:element name="completeTransactionResponse" type="tns:completeTransactionResponse"/>
+  <xs:element name="payWithCreditCardResponse" nillable="true" type="tns:payWithCreditCardResponse"/>
 
-  <xs:element name="createTransaction" type="tns:createTransaction"/>
+  <xs:element name="payWithPaypal" nillable="true" type="tns:payWithPaypal"/>
 
-  <xs:element name="createTransactionResponse" type="tns:createTransactionResponse"/>
+  <xs:element name="payWithPaypalResponse" nillable="true" type="tns:payWithPaypalResponse"/>
 
-  <xs:complexType name="createTransaction">
+  <xs:element name="refundTicket" type="tns:refundTicket"/>
+
+  <xs:element name="refundTicketResponse" type="tns:refundTicketResponse"/>
+
+  <xs:complexType name="payWithCreditCard">
     <xs:sequence>
-      <xs:element name="ID" type="xs:int"/>
-      <xs:element name="eventID" type="xs:int"/>
-      <xs:element name="totalPrice" type="xs:double"/>
-      <xs:element name="email" type="xs:string" minOccurs="0"/>
-      <xs:element name="externalID" type="xs:int"/>
+      <xs:element name="accountNumber" type="xs:string" minOccurs="0"/>
+      <xs:element name="amount" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="createTransactionResponse">
+  <xs:complexType name="payWithCreditCardResponse">
     <xs:sequence>
-      <xs:element name="Transaction" type="tns:transaction" minOccurs="0"/>
+      <xs:element name="return" type="tns:transaction" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -29,16 +30,33 @@
     <xs:sequence/>
   </xs:complexType>
 
-  <xs:complexType name="completeTransaction">
+  <xs:complexType name="payWithPaypal">
     <xs:sequence>
-      <xs:element name="transactionID" type="xs:int"/>
+      <xs:element name="accountNumber" type="xs:string" minOccurs="1"/>
+      <xs:element name="amount" type="xs:double" minOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="completeTransactionResponse">
+  <xs:complexType name="payWithPaypalResponse">
     <xs:sequence>
-      <xs:element name="Transaction" type="tns:transaction" minOccurs="0"/>
+      <xs:element name="return" type="tns:transaction" minOccurs="0"/>
     </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refundTicket">
+    <xs:sequence>
+      <xs:element name="referenceId" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refundTicketResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:refund" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="refund">
+    <xs:sequence/>
   </xs:complexType>
 </xs:schema>
 

@@ -6,31 +6,47 @@
       <xsd:import namespace="http://TransactionService/" schemaLocation="TransactionService_schema1.xsd"/>
     </xsd:schema>
   </types>
-  <message name="createTransaction">
-    <part name="parameters" element="tns:createTransaction"/>
+  <message name="refundTicket">
+    <part name="parameters" element="tns:refundTicket"/>
   </message>
-  <message name="createTransactionResponse">
-    <part name="parameters" element="tns:createTransactionResponse"/>
+  <message name="refundTicketResponse">
+    <part name="parameters" element="tns:refundTicketResponse"/>
   </message>
-  <message name="completeTransaction">
-    <part name="parameters" element="tns:completeTransaction"/>
+  <message name="payWithPaypal">
+    <part name="parameters" element="tns:payWithPaypal"/>
   </message>
-  <message name="completeTransactionResponse">
-    <part name="parameters" element="tns:completeTransactionResponse"/>
+  <message name="payWithPaypalResponse">
+    <part name="parameters" element="tns:payWithPaypalResponse"/>
   </message>
+  <message name="payWithCreditCard">
+    <part name="parameters" element="tns:payWithCreditCard"/>
+  </message>
+  <message name="payWithCreditCardResponse">
+    <part name="parameters" element="tns:payWithCreditCardResponse"/>
+  </message>
+  <message name="transactionData"/>
+  <message name="transactionDataResponse"/>
   <portType name="TransactionService">
-    <operation name="createTransaction">
-      <input wsam:Action="http://TransactionService/TransactionService/createTransactionRequest" message="tns:createTransaction"/>
-      <output wsam:Action="http://TransactionService/TransactionService/createTransactionResponse" message="tns:createTransactionResponse"/>
+    <operation name="refundTicket">
+      <input wsam:Action="http://TransactionService/TransactionService/refundTicketRequest" message="tns:refundTicket"/>
+      <output wsam:Action="http://TransactionService/TransactionService/refundTicketResponse" message="tns:refundTicketResponse"/>
     </operation>
-    <operation name="completeTransaction">
-      <input wsam:Action="http://TransactionService/TransactionService/completeTransactionRequest" message="tns:completeTransaction"/>
-      <output wsam:Action="http://TransactionService/TransactionService/completeTransactionResponse" message="tns:completeTransactionResponse"/>
+    <operation name="payWithPaypal">
+      <input wsam:Action="http://TransactionService/TransactionService/payWithPaypalRequest" message="tns:payWithPaypal"/>
+      <output wsam:Action="http://TransactionService/TransactionService/payWithPaypalResponse" message="tns:payWithPaypalResponse"/>
+    </operation>
+    <operation name="payWithCreditCard">
+      <input wsam:Action="http://TransactionService/TransactionService/payWithCreditCardRequest" message="tns:payWithCreditCard"/>
+      <output wsam:Action="http://TransactionService/TransactionService/payWithCreditCardResponse" message="tns:payWithCreditCardResponse"/>
+    </operation>
+    <operation name="transactionData">
+      <input message="tns:transactionData"/>
+      <output message="tns:transactionDataResponse"/>
     </operation>
   </portType>
   <binding name="TransactionServicePortBinding" type="tns:TransactionService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-    <operation name="createTransaction">
+    <operation name="refundTicket">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -39,7 +55,7 @@
         <soap:body use="literal"/>
       </output>
     </operation>
-    <operation name="completeTransaction">
+    <operation name="payWithPaypal">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>
@@ -47,6 +63,19 @@
       <output>
         <soap:body use="literal"/>
       </output>
+    </operation>
+    <operation name="payWithCreditCard">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="transactionData">
+      <input/>
+      <output/>
     </operation>
   </binding>
   <service name="TransactionService">
